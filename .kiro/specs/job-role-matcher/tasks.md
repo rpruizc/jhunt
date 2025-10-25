@@ -49,7 +49,7 @@ This plan breaks down the job-role-matcher implementation into discrete, increme
 
 ## Phase 2: Scraper Layer
 
-- [ ] 2. Implement base adapter interface and registry
+- [x] 2. Implement base adapter interface and registry
   - Create scraper/base.py with BaseAdapter abstract class
   - Define RawJobPosting dataclass with external_id, title, location, description, url, partial_description
   - Create scraper/adapters/__init__.py with ADAPTERS registry
@@ -57,7 +57,7 @@ This plan breaks down the job-role-matcher implementation into discrete, increme
   - Document adapter contract (must fill external_id, url, set partial_description flag)
   - _Requirements: 1.1, 1.2, 1.3, 1.4, 1.10_
 
-- [ ] 2.1 Implement scraper runner with parallel execution
+- [x] 2.1 Implement scraper runner with parallel execution
   - Create scraper/runner.py with ScraperRunner class
   - Implement refresh_all() with ThreadPoolExecutor (max_workers=4)
   - Use future.result(timeout=30) for timeout protection
@@ -66,7 +66,7 @@ This plan breaks down the job-role-matcher implementation into discrete, increme
   - Add logging for each company result
   - _Requirements: 1.6, 1.7, 1.8, 1.9_
 
-- [ ] 2.2 Implement _refresh_company() method
+- [x] 2.2 Implement _refresh_company() method
   - Call db.upsert_company() to get company_id from DB
   - Fetch jobs using adapter
   - Normalize descriptions with _normalize_text() (preserve paragraph breaks)
@@ -76,7 +76,7 @@ This plan breaks down the job-role-matcher implementation into discrete, increme
   - Update company status (OK or ERROR)
   - _Requirements: 1.4, 1.8, 1.9, 6.4, 6.5_
 
-- [ ] 2.3 Create sample adapters for 3 companies
+- [x] 2.3 Create sample adapters for 3 companies
   - Implement SiemensAdapter in scraper/adapters/siemens.py
   - Implement BoschAdapter in scraper/adapters/bosch.py
   - Implement ABBAdapter in scraper/adapters/abb.py
@@ -96,21 +96,21 @@ This plan breaks down the job-role-matcher implementation into discrete, increme
   - Implement _extract_evidence() helper to capture text snippets around keywords (80 char window)
   - _Requirements: 3.1, 4.4_
 
-- [ ] 3.1 Implement P&L and transformation signal extraction
+- [x] 3.1 Implement P&L and transformation signal extraction
   - Implement extract_pnl_signals() searching for P&L, profitability, EBITDA, budget control keywords
   - Distinguish strong keywords (20 pts) from medium keywords (15 pts)
   - Implement extract_transformation_signals() searching for digital transformation, ERP modernization, post-acquisition integration keywords
   - Capture evidence snippets for each signal
   - _Requirements: 3.2, 3.3_
 
-- [ ] 3.2 Implement industry and geography signal extraction
+- [x] 3.2 Implement industry and geography signal extraction
   - Implement extract_industry_signals() searching for IoT, batteries, manufacturing automation, regulated environments keywords
   - Distinguish strong industry match (20 pts) from adjacent software (10 pts)
   - Implement extract_geo_signals() checking description and location for preferred/banned geographies
   - Set geo.score=10 if preferred geography found, geo.is_banned=True if banned geography found
   - _Requirements: 3.4, 3.5, 3.6_
 
-- [ ] 3.3 Implement scoring engine
+- [x] 3.3 Implement scoring engine
   - Create scorer/engine.py with ScoringEngine class
   - Implement score_job() method that extracts all signals
   - Calculate total score using config weights (normalize by max points per dimension)
@@ -118,13 +118,13 @@ This plan breaks down the job-role-matcher implementation into discrete, increme
   - Clamp total score to 0-100 range
   - _Requirements: 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8_
 
-- [ ] 3.4 Implement action determination and concern generation
+- [x] 3.4 Implement action determination and concern generation
   - Implement _determine_action() assigning APPLY (>=75), WATCH (60-74), SKIP (<60)
   - Implement _generate_concerns() creating concern objects with type and evidence
   - Check for: below target seniority, no P&L, no transformation mandate, no industry match, banned geography, incomplete description
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 4.5_
 
-- [ ] 3.5 Implement summary text generation
+- [x] 3.5 Implement summary text generation
   - Implement _generate_summary() using fixed template structure
   - Identify top 2 strengths from dimension scores
   - Identify top 1 concern (gap)
